@@ -30,6 +30,14 @@ class Controller_Welcome extends Controller
 	 */
 	public function action_index()
 	{
+        error_log('aaaa');
+		$question = new Model_Question();
+		$time = time();
+		$date = date('Y/m/d H:i:s');
+		$question->title = 'Test Title ' . $date;
+		$question->created_at = time();
+		$question->save();
+
 		return Response::forge(View::forge('welcome/index'));
 	}
 

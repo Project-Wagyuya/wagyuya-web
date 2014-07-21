@@ -1,0 +1,4 @@
+fuel/fuel/app/logs
+fuel/fuel/app/cache
+fuel/fuel/app/vendor
+.idea
