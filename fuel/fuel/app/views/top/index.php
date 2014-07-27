@@ -21,5 +21,4 @@ foreach ($newList as $question)
 </ul>
 
 
-
 </body>

@@ -13,6 +13,9 @@ class Controller_Question extends Controller{
 		$q_id = $this->param('q_id');
 		error_log($q_id);
 		$question = Model_Question::find_by_pk($q_id);
+		$selectList = Model_Select::getSelectList($q_id);
+		$selectList_byArray = Model_Select::getSelectList_byArray($q_id);
+		$commentList = Model_Comment::getCommentList($q_id,'5');
 
 		if (!$question)
 		{
@@ -21,6 +24,9 @@ class Controller_Question extends Controller{
 
 		$view = View::forge('question/detail');
 		$view->question = $question;
+		$view->selectList = $selectList;
+		$view->selectList_byArray = $selectList_byArray;
+		$view->commentList = $commentList;
 
 		return Response::forge($view);
 	}

@@ -8,16 +8,16 @@
 
 class Model_Question extends Model_Base{
 
-    //使用するtable
-    protected static $_table_name = "questions";
+	//使用するtable
+	protected static $_table_name = "questions";
 
-    //プライマリキー
-    protected static $_primary_key = "id";
+	//プライマリキー
+	protected static $_primary_key = "id";
 
 
 	public static function getNewList($count = 5)
 	{
-		$list = Model_Question::find(array(
+		$list = model_question::find(array(
 			'order_by' => array(
 				'id' => 'DESC',
 			),
