@@ -14,7 +14,7 @@
 foreach ($newList as $question)
 {
 ?>
-	<li><?php echo \Fuel\Core\Html::anchor('/q/' . $question->id, $question->title);?></li>
+	<li><?php echo \Fuel\Core\Html::anchor('/q/' . $question->id, Model_Base::h($question->title));?></li>
 <?php
 }
 ?>

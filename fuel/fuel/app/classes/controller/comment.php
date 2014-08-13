@@ -12,14 +12,8 @@ class Controller_Comment extends Controller{
 	{
 		$q_id = $this->param('q_id');
 		error_log($q_id);
-		$question = Model_Question::find_by_pk($q_id);
+		$question = Model_Question::getQuestionByKey($q_id);
 		$selectList = Model_Select::getSelectList($q_id);
-		$selectList_byArray = Model_Select::getSelectList_byArray($q_id);
-//		$answerAll = Model_Answer::getAnswerAll($q_id);
-//		foreach ($selectList as $select){
-//			$select->count = Model_Answer::getAnswerResult($select->id);
-//			$select->per = ( $select->count / $answerAll ) * 100;
-//		}
 		$commentList = Model_Comment::getCommentList($q_id);
 
 		if (!$question)
@@ -29,9 +23,7 @@ class Controller_Comment extends Controller{
 
 		$view = View::forge('comment/detail');
 		$view->question = $question;
-//		$view->answerAll = $answerAll;
 		$view->selectList = $selectList;
-		$view->selectList_byArray = $selectList_byArray;
 		$view->commentList = $commentList;
 
 		return Response::forge($view);
@@ -42,12 +34,17 @@ class Controller_Comment extends Controller{
 	{
 		$q_id = $this->param('q_id');
 		error_log($q_id);
-		$question = Model_Question::find_by_pk($q_id);
+		$question = Model_Question::getQuestionByKey($q_id);
 		$selectList = Model_Select::getSelectList($q_id);
+
+		//CSRF対策
+		$csrf['token_key'] = Config::get('security.csrf_token_key');
+		$csrf['token'] = Security::fetch_token();
 
 		$view = View::forge('comment/create');
 		$view->question = $question;
 		$view->selectList = $selectList;
+		$view->csrf = $csrf;
 
 		return Response::forge($view);
 	}
@@ -62,13 +59,19 @@ class Controller_Comment extends Controller{
 			throw new \Exception('コメントをきちんと入力ください');
 		}
 
-		$result = Model_Comment::saveComment($post);
-		if ($result == 'false') {
-			//準備中
-			echo 'DBエラー';
-		}
+		//CSRF対策
+		if(Security::check_token()) {
+			$result = Model_Comment::saveComment($post);
+			if ($result == 'false') {
+				//準備中
+				echo 'DBエラー';
+			}
 
-		return Response::redirect('/c/'.$post['question_id'], 'refresh');
+			return Response::redirect('/c/'.$post['question_id'], 'refresh');
+		} else {
+			//不正なポストのときの処理を入れること
+			echo "不正なポスト";
+		}
 
 	}
 

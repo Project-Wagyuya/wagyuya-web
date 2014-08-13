@@ -8,21 +8,19 @@
 <h1>
 	質問内容
 </h1>
-<b><? echo $question->title; ?></b><br>
-<? echo $question->desc; ?><br>
+<b><? echo $question['title']; ?></b><br>
+<? echo $question['desc']; ?><br>
 <?php
 foreach ($selectList as $select)
 {
 ?>
-	<h3><? echo $select->desc; ?></h3>
+	<h3><? echo Model_Base::h($select['desc']); ?></h3>
 <?php
 }
 ?>
 <br>
 
-<h1>
-	コメント
-</h1>
+<h1>コメント</h1>
 
 <?php
 	echo Form::open(array('action'=>'comment/commit' ,'method'=>'post'));
@@ -35,7 +33,8 @@ foreach ($selectList as $select)
 	echo Form::input('send','コメントを投稿',array('type'=>'submit'));
 
 	//hidden
-	echo Form::hidden('question_id',$question->id,array());
+	echo Form::hidden('question_id', $question['id'], array());
+	echo Form::hidden($csrf['token_key'], $csrf['token'], array());
 
 	echo Form::close();
 ?>

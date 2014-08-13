@@ -15,6 +15,18 @@ class Model_Question extends Model_Base{
 	protected static $_primary_key = "id";
 
 
+	public static function getQuestionByKey($q_id)
+	{
+		$question = DB::select()
+					->from('questions')
+					->where('id',$q_id)
+					->execute()
+					->as_array();
+
+		return $question['0'];
+	}
+
+
 	public static function getNewList($count = 5)
 	{
 		$list = model_question::find(array(
@@ -26,5 +38,6 @@ class Model_Question extends Model_Base{
 
 		return $list;
 	}
+
 
 }

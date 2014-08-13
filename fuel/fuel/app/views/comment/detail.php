@@ -8,39 +8,39 @@
 <h1>
 	質問内容
 </h1>
-<b><? echo $question->title; ?></b><br>
-<? echo $question->desc; ?><br>
+<b><? echo Model_Base::h($question['title']); ?></b><br>
+<? echo Model_Base::h($question['desc']); ?><br>
 <?php
 foreach ($selectList as $select)
 {
 ?>
-	<h3><? echo $select->desc; ?></h3>
+	<h3><? echo Model_Base::h($select['desc']); ?></h3>
 <?php
 }
 ?>
 <br>
-<?php echo \Fuel\Core\Html::anchor('/q/' . $question->id, 'アンケートに投票する');?><br>
-<?php echo \Fuel\Core\Html::anchor('/c_create/' . $question->id, 'アンケートにコメントする');?><br>
+<? echo \Fuel\Core\Html::anchor('/q/' . $question['id'], 'アンケートに投票する');?><br>
+<? echo \Fuel\Core\Html::anchor('/c_create/' . $question['id'], 'アンケートにコメントする');?><br>
 
 
 <h1>
 	コメント
 </h1>
 <?php
-foreach ($commentList as $comment)
-{
-?>
-	<li>
-		<? echo $comment['created_at']; ?><br>
-		<?
-			$c = Format::forge($comment)->to_array();
-			if($c['select_id']){
-				echo $selectList_byArray[$c['select_id']].'派<br>';
-			};
-		?>
-		<? echo $comment['comment']; ?><br>
-	</li><br>
-<?php
+foreach ($commentList as $comment) {
+	echo '<li>'.$comment['created_at'].'<br>';
+
+	$c = Format::forge($comment)->to_array();
+	if($c['select_id']){
+		foreach ($selectList as $k => $s) {
+			if (array_search($c['select_id'], $s)) {
+				$key = $k;
+			}
+		}
+		echo Model_Base::h($selectList[$key]['desc']).'派<br>';
+	};
+
+	echo Model_Base::h($comment['comment']).'<br></li><br>';
 }
 ?>
 

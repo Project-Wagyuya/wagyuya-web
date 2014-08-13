@@ -29,7 +29,7 @@ class Model_Answer extends Model_Base{
 
 
 	//選択肢に対する回答数
-	public static function getAnswerResult($s_id)
+	public static function getAnswerCount($s_id)
 	{
 		$result = DB::select(DB::expr('COUNT(select_id) as count'))->from('answers')->where('select_id',$s_id)->execute();
 		foreach ($result as $r) {
@@ -40,7 +40,7 @@ class Model_Answer extends Model_Base{
 
 
 	//質問に対する全回答数
-	public static function getAnswerAll($q_id)
+	public static function getAnswerAllCount($q_id)
 	{
 		$result = DB::select(DB::expr('COUNT(*) as count'))->from('answers')->where('question_id',$q_id)->execute();
 		foreach ($result as $r) {

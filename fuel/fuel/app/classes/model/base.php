@@ -8,4 +8,8 @@
 
 class Model_Base extends \Fuel\Core\Model_Crud{
 
+	public static function h($string){
+		return htmlspecialchars($string);
+	}
+
 }

@@ -14,38 +14,20 @@ class Model_Select extends Model_Base{
 	//選択肢一覧取得
 	public static function getSelectList($q_id)
 	{
-		$list = Model_Select::find(array(
-			'order_by' => array(
-				'id' => 'DESC',
-			),
-			'where' => array(
-				array('question_id', '=', $q_id),
-	        ),
-		));
+		$list = DB::select()
+					->from('selects')
+					->where('question_id',$q_id)
+					->order_by('id','DESC')
+					->execute()
+					->as_array();
 
-		return $list;
-	}
-
-    //選択肢一覧を配列で取得
-	public static function getSelectList_byArray($q_id)
-	{
-		$list = Model_Select::find(array(
-			'order_by' => array(
-				'id' => 'DESC',
-			),
-			'where' => array(
-				array('question_id', '=', $q_id),
-	        ),
-		));
-
-		if (is_array($list)) {
-			foreach ($list as $l) {
-				$list_array[$l->id] = $l->desc;
-			}
-			return $list_array;
+		$a_allcount = Model_Answer::getAnswerAllCount($q_id);
+		foreach ($list as $k => $l){
+			$list[$k]['count'] = Model_Answer::getAnswerCount($l['id']);
+			$list[$k]['per'] = ( $list[$k]['count'] / $a_allcount ) * 100;
 		}
 
-		return;
+		return $list;
 	}
 
 }

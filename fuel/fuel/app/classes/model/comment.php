@@ -8,8 +8,8 @@
 
 class Model_Comment extends Model_Base{
 
-    //使用するtable
-    protected static $_table_name = "comments";
+	//使用するtable
+	protected static $_table_name = "comments";
 
 	//コメント一覧取得
 	public static function getCommentList($q_id, $limit='10')
